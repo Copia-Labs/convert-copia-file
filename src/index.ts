@@ -76,7 +76,6 @@ async function run(): Promise<void> {
       throw new Error(`Input file not found: ${filePath}`)
     }
 
-    const fileBuffer = fs.readFileSync(filePath)
     const fileName = path.basename(filePath)
 
     const authHeaders = { Authorization: `token ${token}` }
@@ -93,7 +92,7 @@ async function run(): Promise<void> {
     const putResponse = await http.request(
       'POST',
       putUrl,
-      fileBuffer as unknown as string,
+      fs.createReadStream(filePath),
       { 'Content-Type': 'application/octet-stream', ...authHeaders }
     )
 
