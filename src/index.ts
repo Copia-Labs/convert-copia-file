@@ -119,13 +119,9 @@ async function run(): Promise<void> {
 
       assertAuthOk(getStatus)
 
-      if (getStatus === 400 && body.toLowerCase().includes('cache miss')) {
+      if (getStatus === 400) {
         await sleep(POLL_INTERVAL_MS)
         continue
-      }
-
-      if (getStatus === 400) {
-        throw new Error(`Unexpected 400 response: ${body}`)
       }
 
       if (getStatus === 500) {
