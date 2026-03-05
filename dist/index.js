@@ -25739,7 +25739,6 @@ async function run() {
         if (!fs.existsSync(filePath)) {
             throw new Error(`Input file not found: ${filePath}`);
         }
-        const fileBuffer = fs.readFileSync(filePath);
         const fileName = path.basename(filePath);
         const authHeaders = { Authorization: `token ${token}` };
         const putUrl = `${serverUrl}/api/v1/user/conversion-cache-put` +
@@ -25748,7 +25747,7 @@ async function run() {
         const getUrlBase = `${serverUrl}/api/v1/user/conversion-cache-get/${encodeURIComponent(conversion)}`;
         const http = new http_client_1.HttpClient('convert-copia-file');
         core.info(`Uploading ${fileName} for ${conversion} conversion...`);
-        const putResponse = await http.request('POST', putUrl, fileBuffer, { 'Content-Type': 'application/octet-stream', ...authHeaders });
+        const putResponse = await http.request('POST', putUrl, fs.createReadStream(filePath), { 'Content-Type': 'application/octet-stream', ...authHeaders });
         const putStatus = putResponse.message.statusCode ?? 0;
         const putBody = await putResponse.readBody();
         assertAuthOk(putStatus);
