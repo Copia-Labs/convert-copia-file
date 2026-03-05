@@ -1,0 +1,36 @@
+name: 'Convert Copia File'
+description: 'Convert a PLC file to diffable file format via the Copia conversion service.'
+author: 'Copia Automation'
+
+inputs:
+  token:
+    description: 'Personal access token for authentication'
+    required: true
+  file_path:
+    description: 'Path to the PLC file to convert'
+    required: true
+  conversion:
+    description: 'Conversion type (e.g. rockwell-acd, siemens-zap17)'
+    required: true
+  output_path:
+    description: 'Where to save the converted file (defaults to {input}.converted)'
+    required: false
+    default: ''
+  poll_timeout:
+    description: 'Max seconds to wait for conversion'
+    required: false
+    default: '600'
+  server_url:
+    description: 'Base URL of the Copia instance. Defaults to GITHUB_SERVER_URL.'
+    required: false
+    default: ''
+
+outputs:
+  sha:
+    description: 'The SHA of the uploaded file'
+  output_file:
+    description: 'Path to the converted output file'
+
+runs:
+  using: 'node24'
+  main: 'dist/index.js'
