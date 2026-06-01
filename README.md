@@ -11,7 +11,6 @@ Works on both Copia-hosted and self-hosted runners — only requires the Node.js
 ```yaml
 - uses: Copia-Labs/convert-copia-file@v1
   with:
-    token: ${{ secrets.COPIA_TOKEN }}
     file_path: path/to/project.ACD
     conversion: rockwell-acd
 ```
@@ -23,7 +22,6 @@ Works on both Copia-hosted and self-hosted runners — only requires the Node.js
   id: convert
   with:
     server_url: https://app.copia.io # optional override
-    token: ${{ secrets.COPIA_TOKEN }}
     file_path: path/to/project.ACD
     conversion: rockwell-acd
     output_path: output/project.L5X
@@ -37,7 +35,6 @@ Works on both Copia-hosted and self-hosted runners — only requires the Node.js
 
 | Name           | Required | Default                    | Description                                                                                            |
 | -------------- | -------- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `token`        | yes      | —                          | Personal access token                                                                                  |
 | `file_path`    | yes      | —                          | Path to the PLC file to convert                                                                        |
 | `conversion`   | yes      | —                          | Conversion type (e.g. `rockwell-acd`, `siemens-zap17`)                                                 |
 | `output_path`  | no       | `{file_path}.converted`    | Where to save the converted file                                                                       |
