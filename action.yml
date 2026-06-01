@@ -4,8 +4,7 @@ author: 'Copia Automation'
 
 inputs:
   token:
-    description: 'Personal access token for authentication'
-    required: true
+    default: ${{ github.token }}
   file_path:
     description: 'Path to the PLC file to convert'
     required: true

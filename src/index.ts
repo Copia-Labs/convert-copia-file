@@ -80,11 +80,15 @@ async function run(): Promise<void> {
 
     const authHeaders = { Authorization: `token ${token}` }
 
+    const repo = process.env.GITHUB_REPOSITORY
+    if (!repo) {
+      throw new Error('GITHUB_REPOSITORY env var not set')
+    }
     const putUrl =
-      `${serverUrl}/api/v1/user/conversion-cache-put` +
+      `${serverUrl}/api/v1/repos/${repo}/conversion-cache-put` +
       `?conversion=${encodeURIComponent(conversion)}` +
       `&file=${encodeURIComponent(fileName)}`
-    const getUrlBase = `${serverUrl}/api/v1/user/conversion-cache-get/${encodeURIComponent(conversion)}`
+    const getUrlBase = `${serverUrl}/api/v1/repos/${repo}/conversion-cache-get/${encodeURIComponent(conversion)}`
 
     const http = new HttpClient('convert-copia-file')
 
