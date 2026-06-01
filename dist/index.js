@@ -25741,10 +25741,14 @@ async function run() {
         }
         const fileName = path.basename(filePath);
         const authHeaders = { Authorization: `token ${token}` };
-        const putUrl = `${serverUrl}/api/v1/user/conversion-cache-put` +
+        const repo = process.env.GITHUB_REPOSITORY;
+        if (!repo) {
+            throw new Error('GITHUB_REPOSITORY env var not set');
+        }
+        const putUrl = `${serverUrl}/api/v1/repos/${repo}/conversion-cache-put` +
             `?conversion=${encodeURIComponent(conversion)}` +
             `&file=${encodeURIComponent(fileName)}`;
-        const getUrlBase = `${serverUrl}/api/v1/user/conversion-cache-get/${encodeURIComponent(conversion)}`;
+        const getUrlBase = `${serverUrl}/api/v1/repos/${repo}/conversion-cache-get/${encodeURIComponent(conversion)}`;
         const http = new http_client_1.HttpClient('convert-copia-file');
         core.info(`Uploading ${fileName} for ${conversion} conversion...`);
         const putResponse = await http.request('POST', putUrl, fs.createReadStream(filePath), { 'Content-Type': 'application/octet-stream', ...authHeaders });
@@ -25765,12 +25769,9 @@ async function run() {
             const getStatus = getResponse.message.statusCode ?? 0;
             const body = await getResponse.readBody();
             assertAuthOk(getStatus);
-            if (getStatus === 400 && body.toLowerCase().includes('cache miss')) {
+            if (getStatus === 400) {
                 await sleep(POLL_INTERVAL_MS);
                 continue;
-            }
-            if (getStatus === 400) {
-                throw new Error(`Unexpected 400 response: ${body}`);
             }
             if (getStatus === 500) {
                 throw new Error(`Conversion error: ${body}`);
