@@ -25745,9 +25745,14 @@ async function run() {
         if (!repo) {
             throw new Error('GITHUB_REPOSITORY env var not set');
         }
+        // The conversion manager requires org and repo on the conversion job —
+        // uploads without them are rejected with a 400.
+        const [orgName, repoName] = repo.split('/');
         const putUrl = `${serverUrl}/api/v1/repos/${repo}/conversion-cache-put` +
             `?conversion=${encodeURIComponent(conversion)}` +
-            `&file=${encodeURIComponent(fileName)}`;
+            `&file=${encodeURIComponent(fileName)}` +
+            `&org=${encodeURIComponent(orgName)}` +
+            `&repo=${encodeURIComponent(repoName)}`;
         const getUrlBase = `${serverUrl}/api/v1/repos/${repo}/conversion-cache-get/${encodeURIComponent(conversion)}`;
         const http = new http_client_1.HttpClient('convert-copia-file');
         core.info(`Uploading ${fileName} for ${conversion} conversion...`);
