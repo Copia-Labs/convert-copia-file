@@ -9,7 +9,7 @@ Works on both Copia-hosted and self-hosted runners — only requires the Node.js
 ### Minimal Example
 
 ```yaml
-- uses: Copia-Labs/convert-copia-file@v1.1.0
+- uses: Copia-Labs/convert-copia-file@v1.2.0
   with:
     file_path: path/to/project.ACD
     conversion: rockwell-acd
@@ -18,7 +18,7 @@ Works on both Copia-hosted and self-hosted runners — only requires the Node.js
 ### Full Example
 
 ```yaml
-- uses: Copia-Labs/convert-copia-file@v1.1.0
+- uses: Copia-Labs/convert-copia-file@v1.2.0
   id: convert
   with:
     server_url: https://app.copia.io # optional override
