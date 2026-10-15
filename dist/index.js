@@ -25772,7 +25772,7 @@ async function run() {
         while (Date.now() < deadline) {
             const getResponse = await http.request('GET', getUrl, '', authHeaders);
             const getStatus = getResponse.message.statusCode ?? 0;
-            const body = await getResponse.readBody();
+            const body = await getResponse.readBodyBuffer();
             assertAuthOk(getStatus);
             if (getStatus === 400) {
                 await sleep(POLL_INTERVAL_MS);
@@ -25785,7 +25785,7 @@ async function run() {
                 throw new Error(`Unexpected API response: HTTP ${getStatus}: ${body}`);
             }
             const contentType = getResponse.message.headers['content-type'] || '';
-            throwIfConversionError(body, contentType);
+            throwIfConversionError(body.toString(), contentType);
             const outputDir = path.dirname(outputPath);
             if (outputDir && !fs.existsSync(outputDir)) {
                 fs.mkdirSync(outputDir, { recursive: true });

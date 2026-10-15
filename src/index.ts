@@ -124,7 +124,7 @@ async function run(): Promise<void> {
     while (Date.now() < deadline) {
       const getResponse = await http.request('GET', getUrl, '', authHeaders)
       const getStatus = getResponse.message.statusCode ?? 0
-      const body = await getResponse.readBody()
+      const body = await getResponse.readBodyBuffer!()
 
       assertAuthOk(getStatus)
 
@@ -142,7 +142,7 @@ async function run(): Promise<void> {
       }
 
       const contentType = getResponse.message.headers['content-type'] || ''
-      throwIfConversionError(body, contentType)
+      throwIfConversionError(body.toString(), contentType)
 
       const outputDir = path.dirname(outputPath)
       if (outputDir && !fs.existsSync(outputDir)) {
